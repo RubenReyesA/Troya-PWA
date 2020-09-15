@@ -40,5 +40,5 @@ Toda la información y referencias relacionadas están en la siguiente sección.
   <li> <a href="https://router.vuejs.org/">Vue-RouterJS</a> </li>
   <li> <a href="https://firebase.google.com/docs/firestore?hl=es-419">Google Firestore</a> </li>
   <li> <a href="https://firebase.google.com/docs/auth?hl=es-419">Google Firebase Authentication</a> </li>
-  <li> <a href="https://rubenreyesa.github.io/TroyaPWALive/">PWA: Troya - Release</a> </li>
+  <li> <a href="https://rubenreyesa.github.io/Troya-PWA-Live/">PWA: Troya - Release</a> </li>
 </ul>
