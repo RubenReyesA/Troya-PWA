@@ -118,15 +118,15 @@ import fb from "@/fb";
 export default {
   props: ["title", "day", "hour", "match", "title2", "subtitle2", "name"],
   watch: {
-    selectedPlayer: function() {
+    selectedPlayer: function () {
       if (this.selectedPlayer != "") {
         this.isselected = true;
       } else {
         this.isselected = false;
       }
-    }
+    },
   },
-  data: function() {
+  data: function () {
     return {
       t: this.title,
       d: this.day,
@@ -144,11 +144,11 @@ export default {
       playersDuda: [],
       playersIDsFB: [],
       selectedPlayer: null,
-      isselected: false
+      isselected: false,
     };
   },
   methods: {
-    checkDorsal: function() {
+    checkDorsal: function () {
       let found = false;
       let i = 0;
       let size = info.playersList.length;
@@ -161,17 +161,16 @@ export default {
         }
       }
       if (found) {
-        if(info.playersList[i].playerNumber == this.pass){
-            return true;
-        }
-        else{
-            return false;
+        if (info.playersList[i].playerNumber == this.pass) {
+          return true;
+        } else {
+          return false;
         }
       } else {
         return false;
       }
     },
-    assist: function(type) {
+    assist: function (type) {
       this.showError = false;
       let checked = this.checkDorsal();
 
@@ -182,20 +181,14 @@ export default {
           let index = this.lookforPosition(this.selectedPlayer);
           console.log(index);
 
-          fb.db
-            .collection(this.name)
-            .doc(this.playersIDsFB[index])
-            .update({
-              Status: 0
-            });
+          fb.db.collection(this.name).doc(this.playersIDsFB[index]).update({
+            Status: 0,
+          });
         } else if (type == 1) {
           let index = this.lookforPosition(this.selectedPlayer);
-          fb.db
-            .collection(this.name)
-            .doc(this.playersIDsFB[index])
-            .update({
-              Status: 1
-            });
+          fb.db.collection(this.name).doc(this.playersIDsFB[index]).update({
+            Status: 1,
+          });
         }
 
         this.update();
@@ -203,19 +196,20 @@ export default {
         this.showError = true;
       }
     },
-    update: function() {
+    update: function () {
       this.playersListNames = [];
       this.playersVoy = [];
       this.playersNoVoy = [];
       this.playersDuda = [];
       this.playersIDsFB = [];
+      this.pass = "";
 
-      fb.db.collection(this.name).onSnapshot(res => {
+      fb.db.collection(this.name).onSnapshot((res) => {
         const changes = res.docChanges();
 
         let r = false;
 
-        changes.forEach(change => {
+        changes.forEach((change) => {
           if (change.type === "added") {
             let t = change.doc.data();
 
@@ -224,12 +218,9 @@ export default {
                 r = true;
                 let p = {
                   Type: "0",
-                  Jornada: this.$cookies.get("currentJ")
+                  Jornada: this.$cookies.get("currentJ"),
                 };
-                fb.db
-                  .collection(this.name)
-                  .doc(change.doc.id)
-                  .update(p);
+                fb.db.collection(this.name).doc(change.doc.id).update(p);
               }
             } else if (t.Type == "1") {
               let name = this.lookforNamefromNum(t.PlayerNum);
@@ -257,23 +248,20 @@ export default {
         });
 
         if (r) {
-          fb.db.collection(this.name).onSnapshot(res => {
+          fb.db.collection(this.name).onSnapshot((res) => {
             const changes = res.docChanges();
 
-            changes.forEach(change => {
+            changes.forEach((change) => {
               if (change.type === "added") {
                 let t = change.doc.data();
 
                 if (t.Type == "1") {
                   let p = {
                     PlayerNum: t.PlayerNum,
-                    Status: 2
+                    Status: 2,
                   };
 
-                  fb.db
-                    .collection(this.name)
-                    .doc(change.doc.id)
-                    .update(p);
+                  fb.db.collection(this.name).doc(change.doc.id).update(p);
                 }
               }
             });
@@ -282,17 +270,17 @@ export default {
         }
       });
     },
-    add: function() {
+    add: function () {
       for (let i = 0; i < info.playersList.length; i++) {
         let p = {
           PlayerNum: info.playersList[i].playerNumber,
-          Status: 2
+          Status: 2,
         };
 
         fb.db.collection(this.name).add(p);
       }
     },
-    lookforPosition: function(name) {
+    lookforPosition: function (name) {
       let i = 0;
       let found = false;
       let size = this.playersListNames.length;
@@ -309,7 +297,7 @@ export default {
         return i;
       }
     },
-    lookforNamefromNum: function(num) {
+    lookforNamefromNum: function (num) {
       let i = 0;
       let found = false;
       let size = info.playersList.length;
@@ -325,10 +313,10 @@ export default {
       if (found) {
         return info.playersList[i].playerName;
       }
-    }
+    },
   },
-  created: function() {
+  created: function () {
     this.update();
-  }
+  },
 };
 </script>

@@ -30,6 +30,11 @@ var playersList=[
         playerDescription:"",
     },
     {
+        playerNumber:7,
+        playerName:"Rodo",
+        playerDescription:"",
+    },
+    {
         playerNumber:8,
         playerName:"R. Campos",
         playerDescription:"",
@@ -61,7 +66,7 @@ var playersList=[
     },
     {
         playerNumber:14,
-        playerName:"Rodo",
+        playerName:"Jordi",
         playerDescription:"",
     },
     {
