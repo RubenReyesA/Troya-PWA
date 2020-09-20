@@ -89,6 +89,11 @@
     width: 80vw;
 }
 
+.toolbarsubPage {
+    margin-bottom: 20px;
+    width: 50vw;
+}
+
 .toolbarJornada{
     margin-bottom: 20px;
     width: 60vw;
@@ -197,6 +202,12 @@
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
+}
+
+.seasonPhoto{
+    height: 35vh;
+    width: 40vw;
+    margin-right: 50px;
 }
 
 .cardPlayerShirt .cardPlayerPhoto {

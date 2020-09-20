@@ -116,7 +116,7 @@ import fb from "@/fb";
 
 export default {
   methods: {
-    updateScore: function() {
+    updateScore: function () {
       this.showDialog = true;
       this.dialogInfo.title = "Actualizar Resultado Jornada";
       this.dialogInfo.input1disabled = true;
@@ -148,13 +148,10 @@ export default {
           let ar = this.selector.split(" ");
           let id = this.lookforID(ar[1]);
 
-          fb.db
-            .collection("Resultados")
-            .doc(id)
-            .update({
-              jNum: ar[1],
-              Result: this.dialogInfo.input1
-            });
+          fb.db.collection("Resultados").doc(id).update({
+            jNum: ar[1],
+            Result: this.dialogInfo.input1,
+          });
 
           if (this.checkbox) {
             this.resetConvocatoria();
@@ -167,7 +164,7 @@ export default {
         }
       };
     },
-    changeMatchHour: function() {
+    changeMatchHour: function () {
       this.showDialog = true;
       this.dialogInfo.title = "Actualizar Hora Partido";
       this.dialogInfo.btnDisabled = true;
@@ -185,7 +182,7 @@ export default {
           .collection("Home")
           .doc("K5VdQLI9s6TVYOKYswA0")
           .update({
-            HoraPartido: this.timepicker + "h"
+            HoraPartido: this.timepicker + "h",
           });
 
         this.dialogInfo.showSuccess = true;
@@ -193,8 +190,33 @@ export default {
         setTimeout(this.close, 2000);
       };
     },
-    changeTrainingHour: function() {},
-    changeComment: function() {
+    changeTrainingHour: function () {
+      this.showDialog = true;
+      this.dialogInfo.title = "Actualizar Hora Entrenamiento";
+      this.dialogInfo.btnDisabled = true;
+      this.dialogInfo.errorText = "Falta seleccionar la hora del entrenamiento";
+      this.dialogInfo.successText = "Hora actualizada con éxito";
+      this.dialogInfo.btnText = "Actualizar";
+      this.dialogInfo.showInput1 = "display:none";
+      this.dialogInfo.showInput2 = "display:none";
+      this.dialogInfo.timeLabel = "Seleccionar hora del entrenamiento";
+      this.dialogInfo.showTime =
+        "display:flex; flex-direction:row; align-items:center; justify-content:center";
+
+      this.dialogInfo.FBfunction = () => {
+        fb.db
+          .collection("Home")
+          .doc("K5VdQLI9s6TVYOKYswA0")
+          .update({
+            HoraEntreno: this.timepicker + "h",
+          });
+
+        this.dialogInfo.showSuccess = true;
+
+        setTimeout(this.close, 2000);
+      };
+    },
+    changeComment: function () {
       this.showDialog = true;
       this.dialogInfo.title = "Actualizar Comentario";
       this.dialogInfo.errorText = "Falta el texto";
@@ -208,12 +230,9 @@ export default {
         if (this.dialogInfo.input1 == "") {
           this.dialogInfo.showError = true;
         } else {
-          fb.db
-            .collection("Home")
-            .doc("K5VdQLI9s6TVYOKYswA0")
-            .update({
-              Comentario: this.dialogInfo.input1
-            });
+          fb.db.collection("Home").doc("K5VdQLI9s6TVYOKYswA0").update({
+            Comentario: this.dialogInfo.input1,
+          });
 
           this.dialogInfo.showSuccess = true;
 
@@ -221,31 +240,28 @@ export default {
         }
       };
     },
-    resetConvocatoria: function() {
-      fb.db.collection("Convocatoria").onSnapshot(res => {
+    resetConvocatoria: function () {
+      fb.db.collection("Convocatoria").onSnapshot((res) => {
         const changes = res.docChanges();
 
-        changes.forEach(change => {
+        changes.forEach((change) => {
           if (change.type === "added") {
             let t = change.doc.data();
 
             if (t.Type == "1") {
               let p = {
                 PlayerNum: t.PlayerNum,
-                Status: 2
+                Status: 2,
               };
 
-              fb.db
-                .collection("Convocatoria")
-                .doc(change.doc.id)
-                .update(p);
+              fb.db.collection("Convocatoria").doc(change.doc.id).update(p);
             }
           }
         });
       });
     },
-    resetEntrenamiento: function() {},
-    close: function() {
+    resetEntrenamiento: function () {},
+    close: function () {
       this.showDialog = false;
       this.dialogInfo.title = "";
       this.dialogInfo.input1disabled = true;
@@ -272,7 +288,7 @@ export default {
       this.dialogInfo.FBfunction = null;
       this.selector = "";
     },
-    lookforID: function(jNum) {
+    lookforID: function (jNum) {
       let i = 0;
       let size = this.itemsResultados.length;
       let found = false;
@@ -288,9 +304,9 @@ export default {
       if (found) {
         return this.itemsResultados[i].id;
       }
-    }
+    },
   },
-  data: function() {
+  data: function () {
     return {
       toShow: null,
       showError: null,
@@ -321,12 +337,12 @@ export default {
         showInput2: "display:none",
         btnText: "",
         showCheckBox: "display:none",
-        FBfunction: null
-      }
+        FBfunction: null,
+      },
     };
   },
   watch: {
-    selector: function() {
+    selector: function () {
       if (this.selector == "") {
         this.dialogInfo.input1disabled = true;
         this.dialogInfo.btnDisabled = true;
@@ -335,33 +351,33 @@ export default {
         this.dialogInfo.btnDisabled = false;
       }
     },
-    timepicker: function() {
+    timepicker: function () {
       if (this.timepicker == "") {
         this.dialogInfo.btnDisabled = true;
       } else {
         this.dialogInfo.btnDisabled = false;
       }
-    }
+    },
   },
-  created: function() {
-    fb.db.collection("Resultados").onSnapshot(res => {
+  created: function () {
+    fb.db.collection("Resultados").onSnapshot((res) => {
       const changes = res.docChanges();
 
-      changes.forEach(change => {
+      changes.forEach((change) => {
         if (change.type === "added") {
           let t = change.doc.data();
 
           let p = {
             id: change.doc.id,
             j: t.jNum,
-            r: t.Result
+            r: t.Result,
           };
           this.itemsResultados.push(p);
         }
       });
     });
   },
-  mounted: function() {
+  mounted: function () {
     if (info.logInformation.logStatus) {
       this.toShow = true;
       this.showError = false;
@@ -371,6 +387,6 @@ export default {
     }
     this.toShow = true;
     this.showError = false;
-  }
+  },
 };
 </script>

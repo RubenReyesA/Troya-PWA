@@ -119,6 +119,15 @@ import fb from "@/fb";
 import info from "@/information";
 
 export default {
+    mounted: function(){
+    if(info.logInformation.logStatus && 
+    (info.logInformation.logNum == 2 || info.logInformation.logNum == 3)){
+      this.status1 = true;
+    }
+    else{
+      this.status1 = false;
+    }
+  },
   data: function() {
     return {
       showEditTotal: false,
