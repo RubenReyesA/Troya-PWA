@@ -64,6 +64,11 @@ Vue.use(VueRouter)
     name: 'LogIN',
     component: LogIN
   },
+  {
+    path: '/404',
+    name: 'Home',
+    component: Home,
+  }
 
 ]
 

@@ -14,6 +14,10 @@
       <v-icon style="padding:10px" class="black--text">mdi-soccer</v-icon>
 
       <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon @click="refresh">mdi-refresh</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <v-navigation-drawer app v-model="drawer" temporary>
@@ -54,14 +58,20 @@ import info from "@/information";
 
 export default {
   computed: {
-    activeItems: function() {
-      return this.navigationList.filter(function(u) {
+    activeItems: function () {
+      return this.navigationList.filter(function (u) {
         return u.active;
       });
-    }
+    },
+  },
+  methods: {
+    refresh: function () {
+      console.log("32");
+      this.$emit("refresh");
+    },
   },
   watch: {
-    drawer: function() {
+    drawer: function () {
       if (info.logInformation.logStatus) {
         this.navigationList[8].active = true;
         this.navigationList[9].title = "Cerrar Sesión";
@@ -69,9 +79,9 @@ export default {
         this.navigationList[8].active = false;
         this.navigationList[9].title = "Iniciar Sesión";
       }
-    }
+    },
   },
-  data: function() {
+  data: function () {
     return {
       gpsStyle: "display:flex",
       drawer: false,
@@ -80,65 +90,65 @@ export default {
           icon: "mdi-home",
           title: "Inicio",
           route: "/",
-          active: true
+          active: true,
         },
         {
           icon: "mdi-poll-box",
           title: "Estadísticas",
           route: "/stats",
-          active: true
+          active: true,
         },
         {
           icon: "mdi-format-list-numbered",
           title: "Resultados - Clasificación",
           route: "/classf",
-          active: true
+          active: true,
         },
         {
           icon: "mdi-calendar",
           title: "Calendario",
           route: "/calendar",
-          active: true
+          active: true,
         },
         {
           icon: "mdi-crosshairs-gps",
           title: "Ubicación - GPS",
           route: "/gps",
-          active: true
+          active: true,
         },
         {
           icon: "mdi-run",
           title: "Convocatorias",
           route: "/convocatorias",
-          active: true
+          active: true,
         },
-        
+
         {
           icon: "mdi-account-group",
           title: "Plantilla",
           route: "/plantillateam",
-          active: true
+          active: true,
         },
         {
           icon: "mdi-database-settings",
           title: "Gestión del Club",
           route: "/management",
-          active: true
+          active: true,
         },
         {
           icon: "mdi-cog-outline",
           title: "Ajustes",
           route: "/settings",
-          active: true
+          active: true,
         },
         {
           icon: "mdi-account-key",
           title: "Iniciar Sesión",
           route: "/login",
-          active: true
-        }
-      ]
+          active: true,
+        },
+      ],
     };
-  }
+  },
 };
 </script>
