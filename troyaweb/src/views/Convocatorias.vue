@@ -90,12 +90,7 @@ export default {
     this.eTitle = "Datos del Entrenamiento";
     this.eDay = this.$cookies.get("currentEDay");
     this.eHour = this.$cookies.get("currentEHour");
-    if(this.$cookies.get("currentMatch") == "No disponible"){
-      this.eMatch = "Sin partido"
-    }
-    else{
     this.eMatch = this.$cookies.get("currentMatch");
-    }
     this.eTitle2 = "Marca tu asistencia al entrenamiento";
     this.eSubtitle2 = "¿Vas a asistir al entrenamiento?";
     this.eName = "Entrenamiento";

@@ -2,25 +2,17 @@
   <div class="home">
     <div class="try">
       <div id="titleProxPartido">
-        <h3 class="black--text">{{ text }}</h3>
+        <h3 class="black--text">{{text}}</h3>
       </div>
       <div id="FechaHoraPartido">
-        <h2>{{ date }}</h2>
-        <h2>{{ hour }}</h2>
+        <h2>{{date}}</h2>
+        <h2>{{hour}}</h2>
       </div>
       <div id="MatchLayout">
         <div id="localTeam" class="teamcontainer">
-          <v-img
-            :src="localTeam.img"
-            width="80px"
-            class="hidden-md-and-up"
-          ></v-img>
-          <v-img
-            :src="localTeam.img"
-            width="150px"
-            class="hidden-sm-and-down"
-          ></v-img>
-          <p>{{ localTeam.name }}</p>
+          <v-img :src="localTeam.img" width="80px" class="hidden-md-and-up"></v-img>
+          <v-img :src="localTeam.img" width="150px" class="hidden-sm-and-down"></v-img>
+          <p>{{localTeam.name}}</p>
         </div>
 
         <div v-if="showVS" class="resultcontainer">
@@ -40,21 +32,11 @@
         </div>
 
         <div v-if="showResult" id="resultScore" class="resultcontainer">
-          <v-img
-            :src="localTeam.score"
-            width="50px"
-            style="margin: 5px"
-            class="hidden-md-and-up"
-          ></v-img>
+          <v-img :src="localTeam.score" width="50px" style="margin: 5px" class="hidden-md-and-up"></v-img>
 
-          <v-img
-            :src="localTeam.score"
-            width="75px"
-            style="margin: 5px"
-            class="hidden-sm-and-down"
-          ></v-img>
+          <v-img :src="localTeam.score" width="75px" style="margin: 5px" class="hidden-sm-and-down"></v-img>
 
-          <p style="font-size: 75px" class="spacer">-</p>
+          <p style="font-size:75px" class="spacer">-</p>
 
           <v-img
             :src="visitanteTeam.score"
@@ -72,21 +54,13 @@
         </div>
 
         <div id="visitanteTeam" class="teamcontainer">
-          <v-img
-            :src="visitanteTeam.img"
-            width="80px"
-            class="hidden-md-and-up"
-          ></v-img>
-          <v-img
-            :src="visitanteTeam.img"
-            width="150px"
-            class="hidden-sm-and-down"
-          ></v-img>
-          <p>{{ visitanteTeam.name }}</p>
+          <v-img :src="visitanteTeam.img" width="80px" class="hidden-md-and-up"></v-img>
+          <v-img :src="visitanteTeam.img" width="150px" class="hidden-sm-and-down"></v-img>
+          <p>{{visitanteTeam.name}}</p>
         </div>
       </div>
 
-      <v-alert type="info" id="homeComment">{{ comment }}</v-alert>
+      <v-alert type="info" id="homeComment">{{comment}}</v-alert>
 
       <v-btn color="blue-grey" class="ma-2 white--text">
         <v-icon left>mdi-map-marker</v-icon>Conducir al campo
@@ -102,7 +76,7 @@ import fb from "@/fb";
 import info from "@/information";
 
 export default {
-  data: function () {
+  data: function() {
     return {
       noMatch: false,
       text: null,
@@ -114,36 +88,32 @@ export default {
       localTeam: {
         name: null,
         img: "null",
-        score: "null",
+        score: "null"
       },
       visitanteTeam: {
         name: null,
         img: "null",
-        score: "null",
-      },
+        score: "null"
+      }
     };
   },
-  created: function () {
-    fb.db.collection("Home").onSnapshot((res) => {
+  created: function() {
+    fb.db.collection("Home").onSnapshot(res => {
       const changes = res.docChanges();
 
-      changes.forEach((change) => {
+      changes.forEach(change => {
         if (change.type === "added") {
           let t = change.doc.data();
           this.comment = t.Comentario;
-          if (this.noMatch) {
-            this.hour = "puedes buscarlo en el calendario.";
-          } else {
-            this.hour = t.HoraPartido;
-          }
-            info.currentInfo.currentHour = this.hour;
-            this.$cookies.set("currentHour", this.hour);
+          this.hour = t.HoraPartido;
+          info.currentInfo.currentHour = this.hour;
+          this.$cookies.set("currentHour", this.hour);
           this.$cookies.set("currentEHour", t.HoraEntreno);
         }
       });
     });
 
-    Date.prototype.getWeek = function () {
+    Date.prototype.getWeek = function() {
       let dt = this;
       var tdt = new Date(dt.valueOf());
       var dayn = (dt.getDay() + 6) % 7;
@@ -164,15 +134,6 @@ export default {
 
     if (matchIndex == -1) {
       this.noMatch = true;
-
-      this.text = "Esta semana no hay partido";
-      this.date = "Para ver el próximo partido,";
-      info.currentInfo.currentDay = this.date;
-      this.$cookies.set("currentDay", this.date);
-
-      info.currentInfo.currentMatch = "No disponible";
-
-      this.$cookies.set("currentMatch", info.currentInfo.currentMatch);
     } else {
       this.noMatch = false;
 
@@ -182,7 +143,7 @@ export default {
       this.date = info.matches[matchIndex].day;
       info.currentInfo.currentDay = this.date;
       this.$cookies.set("currentDay", this.date);
-      this.$cookies.set("currentEDay", info.matches[matchIndex].eday);
+      this.$cookies.set("currentEDay",info.matches[matchIndex].eday);
 
       this.localTeam.name = info.matches[matchIndex].localTeam.name;
       this.localTeam.img = require("@/assets/Teams/" +
@@ -204,10 +165,10 @@ export default {
     }
   },
   methods: {
-    getScore: function (j) {
+    getScore: function(j) {
       return j.split("-");
     },
-    splitDate: function (fecha) {
+    splitDate: function(fecha) {
       let array = fecha.split("/");
 
       array[0] = Number(array[0]);
@@ -216,11 +177,11 @@ export default {
 
       return array.reverse();
     },
-    getResult: function (j) {
-      fb.db.collection("Resultados").onSnapshot((res) => {
+    getResult: function(j) {
+      fb.db.collection("Resultados").onSnapshot(res => {
         const changes = res.docChanges();
 
-        changes.forEach((change) => {
+        changes.forEach(change => {
           if (change.type === "added") {
             let t = change.doc.data();
             if (t.jNum == j) {
@@ -247,7 +208,7 @@ export default {
         });
       });
     },
-    lookForMatch: function (week) {
+    lookForMatch: function(week) {
       let found = false;
       let i = 0;
       let size = info.matches.length;
@@ -269,7 +230,7 @@ export default {
       } else {
         return -1;
       }
-    },
-  },
+    }
+  }
 };
 </script>

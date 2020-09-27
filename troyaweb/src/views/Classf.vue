@@ -1,6 +1,7 @@
 <template>
   <div class="classf">
-    <div style="height: 70vh" class="try">
+
+    <div style="height:70vh" class="try">
       <v-toolbar class="toolbarPage teal lighten-4 black--text">
         <v-spacer></v-spacer>
 
@@ -17,7 +18,7 @@
 </template>
 
 <script>
-export default {
-  
-};
+// @ is an alias to /src
+
+export default {};
 </script>
