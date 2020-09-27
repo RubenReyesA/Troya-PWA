@@ -71,12 +71,19 @@
     justify-content: center;
 }
 
+.resultsFrame{
+    margin-top: 20px;
+    margin-bottom: 40px;
+    width: 90%;
+}
+
 .btnStyled {
     margin: 15px;
 }
 
 #homeComment {
     margin-top: 10px;
+    
 }
 
 #classfFrame {
