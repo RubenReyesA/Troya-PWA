@@ -67,7 +67,7 @@
       </v-simple-table>
     </div>
 
-    <v-card class="cardConvocatoria" style="width:40vh">
+    <v-card class="cardConvocatoria" style="width:40vh" :disabled="noMatch">
       <v-select v-model="selectedPlayer" label="Escoger jugador" :items="playersListNames"></v-select>
 
       <v-row justify="center">
@@ -145,6 +145,7 @@ export default {
       playersIDsFB: [],
       selectedPlayer: null,
       isselected: false,
+      noMatch: null,
     };
   },
   methods: {
@@ -203,6 +204,14 @@ export default {
       this.playersDuda = [];
       this.playersIDsFB = [];
       this.pass = "";
+
+      if(this.match == "No disponible"){
+        this.noMatch = true;
+      }
+      else{
+        this.noMatch=false;
+      }
+  
 
       fb.db.collection(this.name).onSnapshot((res) => {
         const changes = res.docChanges();

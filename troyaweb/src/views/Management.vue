@@ -80,7 +80,7 @@ export default {
     else{
       this.status1 = false;
       this.status2 = false;
-      this.status3 = false;
+      this.status3 = true;
     }
   },
   data: function() {

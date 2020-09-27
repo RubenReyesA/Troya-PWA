@@ -3,7 +3,7 @@
     <v-dialog v-model="statusDialog" persistent max-width="80vw">
       <v-card>
         <v-card-title class="headline">{{content.title}}</v-card-title>
-        <v-card-text style="white-space: pre;">{{content.info}}</v-card-text>
+        <v-card-text style="white-space: pre;" id="informationAsistencia">{{content.info}}</v-card-text>
 
         <div class="centeredRow">
           <v-alert
@@ -24,6 +24,7 @@
 
 
 <script>
+
 export default {
   props: ["statusDialog", "content"],
   data: function() {
@@ -34,12 +35,16 @@ export default {
   methods: {
     finish: function() {
       this.showSuccess = true;
+
+       this.$copyText(this.content.info).then(function (e) {
+         console.log(e);
+         navigator.clipboard.writeText(e.text);
+       });
+
       setTimeout(() => {
         this.showSuccess = false;
         this.$emit("statusClosed");
       }, 2000);
-      
-      navigator.clipboard.writeText(this.content.info);
       
     }
   }
