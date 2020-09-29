@@ -10,23 +10,60 @@
       </v-toolbar>
 
       <v-card id="gpsframe">
-        <v-select v-model="value" label="Campos de Fútbol" :items="gpsListNames" style="width:70%"></v-select>
+        <v-select
+          v-model="value"
+          label="Campos de Fútbol"
+          :items="gpsListNames"
+          style="width: 70vw"
+        ></v-select>
 
-        <div id="map" ref="map">
-          <iframe
-            :src="iframe"
-            v-if="selected"
-            id="frameGO"
-            frameborder="0"
-            style="border:0;"
-            allowfullscreen="false"
-            aria-hidden="false"
-            tabindex="0"
-          ></iframe>
-          <v-img :src="imageMapsLogo" id="frameGO" v-if="!selected"></v-img>
+        <div id="gpsData">
+          <p style="margin-right: 10px; text-decoration: underline">Nombre:</p>
+          <p>{{ selectedName }}</p>
+          <p style="margin-right: 10px; text-decoration: underline">
+            Dirección:
+          </p>
+          <p>{{ selectedLocation }}</p>
+          <p style="margin-right: 10px; text-decoration: underline">
+            Coordenadas:
+          </p>
+          <p>{{ selectedCoords }}</p>
         </div>
 
-        <v-alert type="info" id="infoGO">{{comment}}</v-alert>
+        <v-alert type="info" id="infoGO">{{ comment }}</v-alert>
+
+        <div id="btnLayout">
+          <v-btn
+            class="btnMaps"
+            color="secondary"
+            large
+            :disabled="!selected"
+            @click="driveTo(1)"
+            >Google Maps</v-btn
+          >
+          <v-btn
+            class="btnMaps"
+            color="secondary"
+            large
+            :disabled="!selected"
+            @click="driveTo(2)"
+            >Apple Maps</v-btn
+          >
+          <v-btn
+            class="btnMaps"
+            color="secondary"
+            large
+            :disabled="!selected"
+            @click="driveTo(3)"
+            >Waze</v-btn
+          >
+          <v-btn
+          class="btnMaps"
+            color="secondary"
+            large
+            :disabled="!selected"
+            @click="driveTo(4)">Otros</v-btn>
+        </div>
       </v-card>
     </div>
   </div>
@@ -38,35 +75,74 @@
 import info from "@/information";
 
 export default {
-  data: function() {
+  data: function () {
     return {
       value: "",
       selected: false,
       gpsList: [],
       gpsListNames: [],
-      imageMapsLogo: require("@/assets/Extras/maps.png"),
-      iframe: null,
-      comment: "Para abrir Google Maps haz click en 'Ampliar el mapa'"
+      comment: "Selecciona el navegador GPS preferido",
+      selectedName: "",
+      selectedLocation: "",
+      selectedCoords: "",
     };
   },
   watch: {
-    value: function() {
+    value: function () {
       let index = this.lookforIndex();
-      this.iframe = this.gpsList[index].maps;
+      this.selectedName = this.gpsList[index].stadium["name"];
+      this.selectedLocation = this.gpsList[index].stadium["location"];
+
+      this.selectedCoords =
+        this.gpsList[index].stadium["lat"] +
+        " , " +
+        this.gpsList[index].stadium["lon"];
+
       this.selected = true;
-    }
+    },
   },
-  created: function() {
+  created: function () {
     this.gpsList = info.teams;
     this.generateListNames();
   },
   methods: {
-    generateListNames: function() {
+    driveTo: function (id) {
+      let s = "";
+      switch (id) {
+        case 1:
+          s = "comgooglemaps://?q=" + this.selectedCoords;
+
+          window.open(s);
+
+          break;
+        case 2:
+          s = "http://maps.apple.com/?q="+ this.selectedName + "&ll=" + this.selectedCoords;
+
+          window.open(s);
+
+          break;
+        case 3:
+          s = "waze://?ll=" + this.selectedCoords;
+
+          window.open(s);
+
+          break;
+        case 4:
+          s = "geo:" + this.selectedCoords;
+
+          window.open(s);
+
+          break;
+        default:
+          break;
+      }
+    },
+    generateListNames: function () {
       for (let i = 0; i < this.gpsList.length; i++) {
         this.gpsListNames.push(this.gpsList[i].name);
       }
     },
-    lookforIndex: function() {
+    lookforIndex: function () {
       let i = 0;
       let found = 0;
       let size = this.gpsListNames.length;
@@ -84,7 +160,7 @@ export default {
       } else {
         return 0;
       }
-    }
-  }
+    },
+  },
 };
 </script>

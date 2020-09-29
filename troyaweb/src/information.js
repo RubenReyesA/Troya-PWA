@@ -127,12 +127,22 @@ var playersList = [
 
 ];
 
+var stadiums = [
+    {
+        name:"V.C.S. Troya",
+        location:"Carrer del Tibidabo s/n, Badia del Vallès 08214, Barcelona",
+        lat:"41.51473296842232",
+        lon:"2.1132101325321173",
+        
+    },
+
+]
+
 var teams = [
     {
         name: "V.C.S. Troya",
         logo: "team1.png",
-        lat: "41.51473296842232",
-        lon: "2.1132101325321173",
+        stadium: stadiums[0],
         maps: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6444.723423604754!2d2.1090492876235447!3d41.51452198322228!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a495cf74db6301%3A0xcd10081b1591cadd!2sCampo%20de%20F%C3%BAtbol%20Municipal%20Sergio%20Busquets%20Burgos!5e0!3m2!1ses!2ses!4v1592898919287!5m2!1ses!2ses"
     },
     {
