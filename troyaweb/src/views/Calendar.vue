@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-
     <div class="try">
       <v-toolbar class="toolbarPage teal lighten-4 black--text">
         <v-spacer></v-spacer>
@@ -17,7 +16,7 @@
 
         <v-spacer></v-spacer>
 
-        <v-toolbar-title>Jornada {{jNum}}</v-toolbar-title>
+        <v-toolbar-title>Jornada {{ jNum }}</v-toolbar-title>
 
         <v-spacer></v-spacer>
 
@@ -27,12 +26,29 @@
       </v-toolbar>
 
       <v-card id="imgJornada">
-        <v-img :src="img" style="margin:10px"></v-img>
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-center">{{ v1 }}</th>
+                <th class="text-center"></th>
+                <th class="text-center">{{ v2 }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in jToShow" :key="item.i">
+                <td class="text-center">{{ item[0] }}</td>
+                <td class="text-center">.vs.</td>
+                <td class="text-center">{{ item[1] }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
       </v-card>
 
       <v-card id="resultJornada">
         <h4>Resultado:</h4>
-        <h2>{{currentResult}}</h2>
+        <h2>{{ currentResult }}</h2>
       </v-card>
     </div>
   </div>
@@ -45,16 +61,16 @@ import info from "@/information";
 import fb from "@/fb";
 
 export default {
-  created: function() {
+  created: function () {
     this.init();
 
-    fb.db.collection("Resultados").onSnapshot(res => {
+    fb.db.collection("Resultados").onSnapshot((res) => {
       const changes = res.docChanges();
 
-      changes.forEach(change => {
+      changes.forEach((change) => {
         if (change.type === "added") {
           this.resultsList.push({
-            ...change.doc.data()
+            ...change.doc.data(),
           });
         }
       });
@@ -62,31 +78,75 @@ export default {
       this.setResult();
     });
   },
-  data: function() {
+  data: function () {
     return {
       jNum: 0,
       img: null,
       resultsList: [],
-      currentResult: ""
+      currentResult: "",
+      arrayJ: [],
+      jToShow: [],
+      v1: "",
+      v2: "",
     };
   },
   methods: {
-    moveJornada: function(direction) {
+    moveJornada: function (direction) {
       if (direction == 0) {
         if (this.jNum > 1) {
           this.jNum--;
-          this.img = require("@/assets/Jornadas/j" + this.jNum + ".png");
+
+          this.jToShow = [];
+          this.v1 = "";
+          this.v2 = "";
+
+          let count = -1;
+
+          for (let i = 0; i < this.arrayJ[this.jNum - 1].length; i++) {
+            if (i % 2 == 0) {
+              count++;
+              this.jToShow.push([]);
+            }
+
+            this.jToShow[count].push(this.arrayJ[this.jNum - 1][i]);
+          }
+
+          this.v1 = this.jToShow[0][0];
+          this.v2 = this.jToShow[0][1];
+
+          this.jToShow.shift();
+
           this.setResult();
         }
       } else if (direction == 1) {
         if (this.jNum < 30) {
           this.jNum++;
-          this.img = require("@/assets/Jornadas/j" + this.jNum + ".png");
+
+          this.jToShow = [];
+          this.v1 = "";
+          this.v2 = "";
+
+          let count = -1;
+
+          for (let i = 0; i < this.arrayJ[this.jNum - 1].length; i++) {
+            if (i % 2 == 0) {
+              count++;
+              this.jToShow.push([]);
+            }
+
+            this.jToShow[count].push(this.arrayJ[this.jNum - 1][i]);
+          }
+
+          this.v1 = this.jToShow[0][0];
+          this.v2 = this.jToShow[0][1];
+
+          this.jToShow.shift();
+
           this.setResult();
         }
       }
     },
-    setResult: function() {
+    setResult: function () {
       let i = 0;
       let found = false;
       let size = this.resultsList.length;
@@ -103,8 +163,8 @@ export default {
         this.currentResult = this.resultsList[i].Result;
       }
     },
-    init: function() {
-      Date.prototype.getWeek = function() {
+    init: function () {
+      Date.prototype.getWeek = function () {
         let dt = this;
         var tdt = new Date(dt.valueOf());
         var dayn = (dt.getDay() + 6) % 7;
@@ -128,9 +188,37 @@ export default {
       } else {
         this.jNum = info.matches[matchIndex].j;
       }
-      this.img = require("@/assets/Jornadas/j" + this.jNum + ".png");
+
+      let t = JSON.parse(info.jornadasText);
+
+      let count = -1;
+
+      for (let i = 0; i < t.length; i++) {
+        if (i % 18 == 0) {
+          count++;
+          this.arrayJ.push([]);
+        }
+
+        this.arrayJ[count].push(t[i]);
+      }
+
+      count = -1;
+
+      for (let i = 0; i < this.arrayJ[this.jNum - 1].length; i++) {
+        if (i % 2 == 0) {
+          count++;
+          this.jToShow.push([]);
+        }
+
+        this.jToShow[count].push(this.arrayJ[this.jNum - 1][i]);
+      }
+
+      this.v1 = this.jToShow[0][0];
+      this.v2 = this.jToShow[0][1];
+
+      this.jToShow.shift();
     },
-    splitDate: function(fecha) {
+    splitDate: function (fecha) {
       let array = fecha.split("/");
 
       array[0] = Number(array[0]);
@@ -139,7 +227,7 @@ export default {
 
       return array.reverse();
     },
-    lookForMatch: function(week) {
+    lookForMatch: function (week) {
       let found = false;
       let i = 0;
       let size = info.matches.length;
@@ -161,7 +249,7 @@ export default {
       } else {
         return -1;
       }
-    }
-  }
+    },
+  },
 };
 </script>

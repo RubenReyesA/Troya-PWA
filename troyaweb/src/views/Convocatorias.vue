@@ -10,7 +10,12 @@
       </v-toolbar>
 
       <v-card class="toolbarPage black--text">
-        <v-tabs background-color="teal lighten-4" v-model="tabs" centered icons-and-text>
+        <v-tabs
+          background-color="teal lighten-4"
+          v-model="tabs"
+          centered
+          icons-and-text
+        >
           <v-tabs-slider></v-tabs-slider>
 
           <v-tab href="#tab1">
@@ -57,9 +62,9 @@
 import Meeting from "@/components/Meeting";
 export default {
   components: {
-    Meeting
+    Meeting,
   },
-  data: function() {
+  data: function () {
     return {
       tabs: null,
       pTitle: null,
@@ -75,10 +80,10 @@ export default {
       eMatch: null,
       eTitle2: null,
       eSubtitle2: null,
-      eName: null
+      eName: null,
     };
   },
-  mounted: function() {
+  mounted: function () {
     this.pTitle = "Datos de la Convocatoria";
     this.pDay = this.$cookies.get("currentDay");
     this.pHour = this.$cookies.get("currentHour");
@@ -90,11 +95,15 @@ export default {
     this.eTitle = "Datos del Entrenamiento";
     this.eDay = this.$cookies.get("currentEDay");
     this.eHour = this.$cookies.get("currentEHour");
-    this.eMatch = this.$cookies.get("currentMatch");
+    if (this.$cookies.get("currentMatch") == "No disponible") {
+      this.eMatch = "Sin partido";
+    } else {
+      this.eMatch = this.$cookies.get("currentMatch");
+    }
     this.eTitle2 = "Marca tu asistencia al entrenamiento";
     this.eSubtitle2 = "¿Vas a asistir al entrenamiento?";
     this.eName = "Entrenamiento";
-  }
+  },
 };
 </script>
 
