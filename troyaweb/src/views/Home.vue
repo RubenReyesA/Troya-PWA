@@ -88,7 +88,7 @@
 
       <v-alert type="info" id="homeComment">{{ comment }}</v-alert>
 
-      <v-btn color="blue-grey" class="ma-2 white--text">
+      <v-btn color="blue-grey" class="ma-2 white--text" @click="driveTo">
         <v-icon left>mdi-map-marker</v-icon>Conducir al campo
       </v-btn>
     </div>
@@ -269,6 +269,9 @@ export default {
       } else {
         return -1;
       }
+    },
+    driveTo: function(){
+      window.open("tomtomgo://x-callback-url/navigate?destination=41.5147329684223,2.1132101325321173")
     },
   },
 };
