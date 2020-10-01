@@ -20,7 +20,7 @@
             width="150px"
             class="hidden-sm-and-down"
           ></v-img>
-          <p>{{ localTeam.name }}</p>
+          <p class="textHome">{{ localTeam.name }}</p>
         </div>
 
         <div v-if="showVS" class="resultcontainer">
@@ -82,15 +82,102 @@
             width="150px"
             class="hidden-sm-and-down"
           ></v-img>
-          <p>{{ visitanteTeam.name }}</p>
+          <p class="textHome">{{ visitanteTeam.name }}</p>
         </div>
       </div>
 
       <v-alert type="info" id="homeComment">{{ comment }}</v-alert>
 
-      <v-btn color="blue-grey" class="ma-2 white--text" @click="driveTo">
-        <v-icon left>mdi-map-marker</v-icon>Conducir al campo
-      </v-btn>
+      <v-row justify="center">
+        <v-dialog v-model="GPSDialog" persistent max-width="85vw">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              color="blue-grey"
+              dark
+              class="ma-2 white--text"
+              @click="loadGPS"
+            >
+              <v-icon left>mdi-map-marker</v-icon>Conducir al campo
+            </v-btn>
+          </template>
+
+          <v-card>
+            <v-card-title class="headline"> Conducir al campo </v-card-title>
+
+            <div class="try">
+              <div class="gpsData" style="width:80vw">
+                <p style="margin-right: 10px; text-decoration: underline">
+                  Nombre:
+                </p>
+                <p>{{ selectedName }}</p>
+                <p style="margin-right: 10px; text-decoration: underline">
+                  Dirección:
+                </p>
+                <p>{{ selectedLocation }}</p>
+                <p style="margin-right: 10px; text-decoration: underline">
+                  Coordenadas:
+                </p>
+                <p>{{ selectedCoords }}</p>
+              </div>
+              <div class="clothesData">
+                <div class="clothesImages">
+                  <v-img class="cPict" :src="shirt"> </v-img>
+                  <p style="color: white">kkkkkk</p>
+                  <v-img class="cPict" :src="pants"> </v-img>
+                </div>
+                <p id="text">Vestimenta</p>
+              </div>
+            </div>
+
+        
+            <div class="clothesData2">
+            <v-alert type="info">{{
+              GPScomment
+            }}</v-alert>
+            </div>
+
+            <div class="clothesData2">
+            <v-btn
+                class="btnMaps"
+                color="secondary"
+                large
+                @click="driveTo(1)"
+                >Google Maps</v-btn
+              >
+              <v-btn
+                class="btnMaps"
+                color="secondary"
+                large
+                @click="driveTo(2)"
+                >Apple Maps (iOS)</v-btn
+              >
+              <v-btn
+                class="btnMaps"
+                color="secondary"
+                large
+                @click="driveTo(3)"
+                >Waze</v-btn
+              >
+              <v-btn
+                class="btnMaps"
+                color="secondary"
+                large
+                @click="driveTo(4)"
+                >Otros (Android)</v-btn
+              >
+            </div>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="green darken-1" text @click="GPSDialog = false">
+                Cerrar
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
     </div>
   </div>
 </template>
@@ -107,10 +194,13 @@ export default {
       noMatch: false,
       text: null,
       comment: null,
+      GPScomment: "Selecciona el navegador GPS preferido",
       hour: null,
       showVS: false,
       showResult: true,
       date: null,
+      GPSDialog: false,
+      stadium:null,
       localTeam: {
         name: null,
         img: "null",
@@ -121,6 +211,12 @@ export default {
         img: "null",
         score: "null",
       },
+      selectedName: "",
+      selectedLocation: "",
+      selectedCoords: "",
+      selectedPlaceID: "",
+      shirt: "",
+      pants: "",
     };
   },
   created: function () {
@@ -187,6 +283,7 @@ export default {
       this.localTeam.name = info.matches[matchIndex].localTeam.name;
       this.localTeam.img = require("@/assets/Teams/" +
         info.matches[matchIndex].localTeam.logo);
+      this.stadium = info.matches[matchIndex].localTeam.stadium;
 
       this.visitanteTeam.name = info.matches[matchIndex].visitanteTeam.name;
       this.visitanteTeam.img = require("@/assets/Teams/" +
@@ -270,8 +367,64 @@ export default {
         return -1;
       }
     },
-    driveTo: function(){
-      window.open("tomtomgo://x-callback-url/navigate?destination=41.5147329684223,2.1132101325321173")
+    driveTo: function (id) {
+      let s = "";
+      switch (id) {
+        case 1:
+          //s = "comgooglemaps://?q=" + this.selectedCoords;
+          s =
+            "https://www.google.com/maps/search/?api=1&query=" +
+            this.selectedCoords +
+            "&query_place_id=" +
+            this.selectedPlaceID;
+
+          window.open(s);
+
+          break;
+        case 2:
+          s =
+            "http://maps.apple.com/?q=" +
+            this.selectedName +
+            "&ll=" +
+            this.selectedCoords;
+
+          window.open(s);
+
+          break;
+        case 3:
+          s = "waze://?ll=" + this.selectedCoords;
+
+          window.open(s);
+
+          break;
+        case 4:
+          s = "geo:" + this.selectedCoords;
+
+          window.open(s);
+
+          break;
+        default:
+          break;
+      }
+    },
+    loadGPS: function () {
+
+      this.selectedName = this.stadium["name"];
+      this.selectedLocation = this.stadium["location"];
+
+      this.selectedCoords =
+        this.stadium["lat"] +
+        " , " +
+        this.stadium["lon"];
+
+      this.selectedPlaceID = this.stadium["place_id"];
+
+      this.shirt = require("../assets/Clothes/s" + (this.stadium["code"]) + ".png");
+      this.pants = require("../assets/Clothes/p" + (this.stadium["code"]) + ".png");
+
+      this.GPSDialog = true;
+
+
     },
   },
 };

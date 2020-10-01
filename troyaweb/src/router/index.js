@@ -64,16 +64,11 @@ Vue.use(VueRouter)
     name: 'LogIN',
     component: LogIN
   },
-  {
-    path: '/404',
-    name: 'Home',
-    component: Home,
-  }
 
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })

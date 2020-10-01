@@ -17,17 +17,29 @@
           style="width: 70vw"
         ></v-select>
 
-        <div id="gpsData">
-          <p style="margin-right: 10px; text-decoration: underline">Nombre:</p>
-          <p>{{ selectedName }}</p>
-          <p style="margin-right: 10px; text-decoration: underline">
-            Dirección:
-          </p>
-          <p>{{ selectedLocation }}</p>
-          <p style="margin-right: 10px; text-decoration: underline">
-            Coordenadas:
-          </p>
-          <p>{{ selectedCoords }}</p>
+        <div class="try">
+          <div class="gpsData">
+            <p style="margin-right: 10px; text-decoration: underline">
+              Nombre:
+            </p>
+            <p>{{ selectedName }}</p>
+            <p style="margin-right: 10px; text-decoration: underline">
+              Dirección:
+            </p>
+            <p>{{ selectedLocation }}</p>
+            <p style="margin-right: 10px; text-decoration: underline">
+              Coordenadas:
+            </p>
+            <p>{{ selectedCoords }}</p>
+          </div>
+          <div class="clothesData">
+            <div class="clothesImages">
+              <v-img class="cPict" :src="shirt"> </v-img>
+              <p style="color: white">kkkkkk</p>
+              <v-img class="cPict" :src="pants"> </v-img>
+            </div>
+            <p id="text">Vestimenta</p>
+          </div>
         </div>
 
         <v-alert type="info" id="infoGO">{{ comment }}</v-alert>
@@ -47,7 +59,7 @@
             large
             :disabled="!selected"
             @click="driveTo(2)"
-            >Apple Maps</v-btn
+            >Apple Maps (iOS)</v-btn
           >
           <v-btn
             class="btnMaps"
@@ -58,11 +70,13 @@
             >Waze</v-btn
           >
           <v-btn
-          class="btnMaps"
+            class="btnMaps"
             color="secondary"
             large
             :disabled="!selected"
-            @click="driveTo(4)">Otros</v-btn>
+            @click="driveTo(4)"
+            >Otros (Android)</v-btn
+          >
         </div>
       </v-card>
     </div>
@@ -85,6 +99,9 @@ export default {
       selectedName: "",
       selectedLocation: "",
       selectedCoords: "",
+      selectedPlaceID: "",
+      shirt: "",
+      pants: "",
     };
   },
   watch: {
@@ -98,6 +115,11 @@ export default {
         " , " +
         this.gpsList[index].stadium["lon"];
 
+      this.selectedPlaceID = this.gpsList[index].stadium["place_id"];
+
+      this.shirt = require("../assets/Clothes/s" + (index+1) + ".png");
+      this.pants = require("../assets/Clothes/p" + (index+1) + ".png");
+
       this.selected = true;
     },
   },
@@ -110,13 +132,22 @@ export default {
       let s = "";
       switch (id) {
         case 1:
-          s = "comgooglemaps://?q=" + this.selectedCoords;
+          //s = "comgooglemaps://?q=" + this.selectedCoords;
+          s =
+            "https://www.google.com/maps/search/?api=1&query=" +
+            this.selectedCoords +
+            "&query_place_id=" +
+            this.selectedPlaceID;
 
           window.open(s);
 
           break;
         case 2:
-          s = "http://maps.apple.com/?q="+ this.selectedName + "&ll=" + this.selectedCoords;
+          s =
+            "http://maps.apple.com/?q=" +
+            this.selectedName +
+            "&ll=" +
+            this.selectedCoords;
 
           window.open(s);
 

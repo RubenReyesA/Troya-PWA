@@ -129,11 +129,148 @@ var playersList = [
 
 var stadiums = [
     {
-        name:"V.C.S. Troya",
-        location:"Carrer del Tibidabo s/n, Badia del Vallès 08214, Barcelona",
-        lat:"41.51473296842232",
-        lon:"2.1132101325321173",
-        
+        name: "V.C.S. Troya",
+        location: "Carrer del Tibidabo s/n, 08214 Badia del Vallès, Barcelona",
+        lat: "41.51473296842232",
+        lon: "2.1132101325321173",
+        place_id: "ChIJAWPbdM-VpBIR3cqRFRsIEM0",
+        code: 1,
+
+    },
+    {
+        name: "V. Mirasol",
+        location: "Camí Sant Cugat al Papiol, 132, 08195 Sant Cugat del Vallès, Barcelona",
+        lat: "41.469167",
+        lon: "2.046763",
+        place_id: "ChIJeU97GyKRpBIRzhmlAhoMy9A",
+        code: 2,
+
+    },
+    {
+        name: "UD. Lourdes B",
+        location: "Camí de Can Vila, s/n, 08100, Barcelona",
+        lat: "41.554186",
+        lon: "2.216929",
+        place_id: "ChIJJ7j69kq_pBIRNkncNCPy9wA",
+        code: 3,
+
+    },
+    {
+        name: "V. Polinyà B",
+        location: "Passeig de Sanllehy, 08213 Polinyà, Barcelona",
+        lat: "41.554686",
+        lon: "2.160572",
+        place_id: "ChIJV9syuse_pBIRuwWH7XDnfDk",
+        code: 4,
+
+    },
+    {
+        name: "V. Singuerlín",
+        location: "Avinguda de l'Anselm de Riu, 15, 08924 Santa Coloma de Gramenet, Barcelona",
+        lat: "41.454368",
+        lon: "2.201809",
+        place_id: "ChIJR2zXh_O8pBIR6qlufr4zz00",
+        code:5,
+
+    },
+    {
+        name: "Sabadell Nord",
+        location: "Ronda de Collsalarca, 4B, 08207 Sabadell, Barcelona",
+        lat: "41.568006",
+        lon: "2.094452",
+        place_id: "ChIJ8W7YlsSUpBIRQ9JDa07pBmQ",
+        code: 6,
+
+    },
+    {
+        name: "V. Turó de la Peira",
+        location: "Carrer de Beret, 5, 08031, Parque del Turó de la Peira, Barcelona",
+        lat: "41.432598",
+        lon: "2.166699",
+        place_id: "ChIJreUoyDm9pBIRXovvfQR-PMg",
+        code: 7,
+
+    },
+    {
+        name: "La Creueta",
+        location: "Passeig del Pintor Sert, 20, 08120 La Llagosta, Barcelona",
+        lat: "41.507794",
+        lon: "2.194480",
+        place_id: "ChIJma6JKZu-pBIReFJ7dU94a9M",
+        code: 8,
+
+    },
+    {
+        name: "Gornal-Derbi",
+        location: "Av. Carmen Amaya, 57, 08902 L'Hospitalet de Llobregat, Barcelona",
+        lat: "41.358269",
+        lon: "2.117228",
+        place_id: "ChIJPUISD8OYpBIRLIH03ZZ-iNU",
+        code: 9,
+
+    },
+    {
+        name: "UD. Lourdes A",
+        location: "Camí de Can Vila, s/n, 08100, Barcelona",
+        lat: "41.554186",
+        lon: "2.216929",
+        place_id: "ChIJJ7j69kq_pBIRNkncNCPy9wA",
+        code: 10,
+
+    },
+    {
+        name: "Sacachispas",
+        location: "Carrer d'Oristà, 8, 08033 Barcelona",
+        lat: "41.463333",
+        lon: "2.186291",
+        place_id: "ChIJe5eN-1S8pBIRsYA8OPnvSW0",
+        code: 11,
+
+    },
+    {
+        name: "Esc. Ripollet",
+        location: "Carrer del Padró, 96, 08291 Ripollet, Barcelona",
+        lat: "41.500865",
+        lon: "2.161907",
+        place_id: "ChIJ39x0ggq-pBIR2mbUMK8-UMk",
+        code: 12,
+
+    },
+    {
+        name: "UD. Andalucía",
+        location: "Ronda de Santa Maria, 173, 08210 Barberà del Vallès, Barcelona",
+        lat: "41.519572",
+        lon: "2.130099",
+        place_id: "ChIJ2eQ6EMKVpBIRESbzyhU6DNc",
+        code: 13,
+
+    },
+    {
+        name: "Can Buxeres",
+        location: "Ctra. Esplugues, s/n, 08906 L'Hospitalet de Llobregat, Barcelona",
+        lat: "41.366539",
+        lon: "2.095440",
+        place_id: "ChIJr8V3UBeZpBIRn-naN6nM-e8",
+        code: 14,
+
+    },
+    {
+        name: "V. Gladiador",
+        location: "Carrer de Puigcerdà, 56, 08019 Barcelona",
+        lat: "41.412577",
+        lon: "2.214052",
+        place_id: "ChIJnU1OzlGjpBIRdA6lEET6cAo",
+        code: 15,
+
+    },
+    {
+        name: "V. Vilanova",
+        location: "Carrer del Pla, 3, 08410 Vilanova del Vallès, Barcelona",
+        lat: "41.548531",
+        lon: "2.287157",
+        place_id: "ChIJDxzDVze4pBIRN0QE3s8J6VQ",
+        code: 16,
+
     },
 
 ]
@@ -143,112 +280,81 @@ var teams = [
         name: "V.C.S. Troya",
         logo: "team1.png",
         stadium: stadiums[0],
-        maps: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6444.723423604754!2d2.1090492876235447!3d41.51452198322228!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a495cf74db6301%3A0xcd10081b1591cadd!2sCampo%20de%20F%C3%BAtbol%20Municipal%20Sergio%20Busquets%20Burgos!5e0!3m2!1ses!2ses!4v1592898919287!5m2!1ses!2ses"
     },
     {
         name: "V. Mirasol",
         logo: "team2.png",
-        lat: "41.432634",
-        lon: "2.166692",
-        maps: "",
+        stadium: stadiums[1],
     },
     {
         name: "UD. Lourdes B",
         logo: "team3.png",
-        lat: "41.366591",
-        lon: "2.095434",
-        maps: "",
+        stadium: stadiums[2],
     },
     {
         name: "V. Polinyà B",
         logo: "team4.png",
-        lat: "41.554245",
-        lon: "2.216818",
-        maps: "",
+        stadium: stadiums[3],
     },
     {
         name: "V. Singuerlín",
         logo: "team5.png",
-        lat: "41.442191",
-        lon: "2.170314",
-        maps: "",
+        stadium: stadiums[4],
     },
     {
         name: "Sabadell Nord",
         logo: "team6.png",
-        lat: "41.588231",
-        lon: "2.237750",
-        maps: "",
+        stadium: stadiums[5],
     },
     {
         name: "V. Turó de la Peira",
         logo: "team7.png",
-        lat: "41.519568",
-        lon: "2.130095",
-        maps: "",
+        stadium: stadiums[6],
     },
     {
         name: "La Creueta",
         logo: "team8.png",
-        lat: "41.357842",
-        lon: "2.117560",
-        maps: "",
+        stadium: stadiums[7],
     },
     {
         name: "Gornal-Derbi",
         logo: "team9.png",
-        lat: "41.438204",
-        lon: "2.183895",
-        maps: "",
+        stadium: stadiums[8],
     },
     {
         name: "UD. Lourdes A",
         logo: "team10.png",
-        lat: "41.499542",
-        lon: "2.149221",
-        maps: "",
+        stadium: stadiums[9],
     },
     {
         name: "Sacachispas",
         logo: "team11.png",
-        lat: "41.554245",
-        lon: "2.216818",
-        maps: "",
+        stadium: stadiums[10],
     },
     {
         name: "Esc. Ripollet",
         logo: "team12.png",
-        lat: "41.507351",
-        lon: "2.194417",
-        maps: "",
+        stadium: stadiums[11],
     },
     {
         name: "UD. Andalucía",
         logo: "team13.png",
-        lat: "41.463363",
-        lon: "2.186299",
-        maps: "",
+        stadium: stadiums[12],
     },
     {
         name: "Can Buxeres",
         logo: "team14.png",
-        lat: "41.346803",
-        lon: "2.101849",
-        maps: "",
+        stadium: stadiums[13],
     },
     {
         name: "V. Gladiador",
         logo: "team15.png",
-        lat: "41.454416",
-        lon: "2.200734",
-        maps: "",
+        stadium: stadiums[14],
     },
     {
         name: "V. Vilanova",
         logo: "team16.png",
-        lat: "",
-        lon: "",
-        maps: "",
+        stadium: stadiums[15],
     },
 
 ]
