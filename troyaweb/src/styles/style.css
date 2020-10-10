@@ -116,8 +116,12 @@
     margin-top: 20px;
 }
 
+#gestiotool{
+    width: 90vw;
+}
+
 #resultJornada {
-    width: 30vw;
+    width: 50vw;
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -299,7 +303,7 @@
 }
 
 #saldoCard {
-    width: 50vw;
+    width: 60vw;
     padding: 10px;
     text-align: center;
     margin-top: 15px;

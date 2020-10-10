@@ -1,7 +1,7 @@
 <template>
   <div class="accounts">
     <div class="try">
-      <v-toolbar class="toolbarPage teal lighten-4 black--text">
+      <v-toolbar class="toolbarPage teal lighten-4 black--text" id="gestiotool">
         <v-spacer></v-spacer>
 
         <v-toolbar-title>Gestión del Club</v-toolbar-title>
