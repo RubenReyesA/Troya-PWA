@@ -8,12 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^0.19.2",
-    "cheerio": "^1.0.0-rc.3",
-    "core-js": "^3.6.5",
-    "cors": "^2.8.5",
-    "firebase": "^7.15.3",
-    "html-table-to-json": "^1.0.0",
+    "firebase": "^7.23.0",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-cookies": "^1.7.0",

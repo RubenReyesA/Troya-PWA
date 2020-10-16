@@ -16,16 +16,14 @@
               <tr>
                 <th class="text-center">{{ text1 }}</th>
                 <th class="text-center"></th>
-                <th class="text-center"></th>
                 <th class="text-center">{{ text3 }}</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="item in table1" :key="item.i">
-                <td class="text-center">{{ item["Equipo 1"] }}</td>
-                <td class="text-center">{{ item["2"] }}</td>
-                <td class="text-center">{{ item["3"] }}</td>
-                <td class="text-center">{{ item["Equipo 2"] }}</td>
+                <td class="text-center">{{ item["EquipoLocal"] }}</td>
+                <td class="text-center">{{ item["Resultado"] }}</td>
+                <td class="text-center">{{ item["EquipoVisitante"] }}</td>
               </tr>
             </tbody>
           </template>
@@ -55,12 +53,16 @@
 </template>
 
 <script>
+import fb from "@/fb";
+
 export default {
   data: function () {
     return {
-      text1: "",
-      text2: "",
+      text1: "Domingos 2",
+      text2: " --> ",
       text3: "",
+      done1: false,
+      done2: false,
       table1: [],
       table2: [],
       headers2: [
@@ -68,14 +70,14 @@ export default {
           text: "POS",
           align: "start",
           sortable: false,
-          value: "POS",
+          value: "Pos",
         },
-        { text: "Equipo", value: "Equipos" },
-        { text: "PTS", value: "PTS" },
-        { text: "PJ", value: "PJ" },
-        { text: "PG", value: "PG" },
-        { text: "PE", value: "PE" },
-        { text: "PP", value: "PP" },
+        { text: "Equipo", value: "Equipo" },
+        { text: "PTS", value: "Puntos" },
+        { text: "PJ", value: "J" },
+        { text: "PG", value: "G" },
+        { text: "PE", value: "E" },
+        { text: "PP", value: "P" },
         { text: "GF", value: "GF" },
         { text: "GC", value: "GC" },
         { text: "DIF", value: "DIFF" },
@@ -83,83 +85,101 @@ export default {
     };
   },
   methods: {
-    restyleNames:function(){
-
+    restyleNames: function (id) {
       let dict = {
-        "v.gladiador":"V. Gladiador",
-        "FC.can buxeras":"Can Buxeres",
-        "ud.andalucia":"UD. Andalucía",
-        "vcs.troya":"V.C.S. Troya",
-        "esc.ripollet":"Esc. Ripollet",
-        "creueta 2":"La Creueta",
-        'u.d.lourdes "b"':"UD. Lourdes B",
-        "aev.suinguerlin":"V. Singuerlín",
-        "v.lli�a d'avall":"V. Lliçà de Vall",
-        "v. turo de la peira":"V. Turó - Peira",
-        "vtcf damm":"C.F. Damm",
-        "ud.lourdes a":"UD. Lourdes A",
-        "gornal derbi":"Gornal Derbi",
-        "vet.ubellvitge a":"U. Bellvitge",
-        "v.alzamora":"V. Alzamora",
-        "v.la celeste":"La Celeste"
-      }
+        "v.gladiador": "V. Gladiador",
+        "can buxeras": "Can Buxeres",
+        "ud.andalucia": "UD. Andalucía",
+        "vcs.troya": "V.C.S. Troya",
+        "esc.ripollet": "Esc. Ripollet",
+        "la creueta": "La Creueta",
+        "ud.lourdes b": "UD. Lourdes B",
+        "V.singuerlin": "V. Singuerlín",
+        "sabadell nord": "Sabadell Nord",
+        "v.turo de la peira": "V. Turó - Peira",
+        "v.polinya b": "V. Polinyà B",
+        "ud.lourdes a": "UD. Lourdes A",
+        "gornal-derbi": "Gornal Derbi",
+        "v.mirasol": "V. Mirasol",
+        "sacachispas": "Sacachispas",
+        "V.GLADIADOR": "V. Gladiador",
+        "CAN BUXERAS": "Can Buxeres",
+        "UD.ANDALUCIA": "UD. Andalucía",
+        "VCS.TROYA": "V.C.S. Troya",
+        "ESC.RIPOLLET": "Esc. Ripollet",
+        "LA CREUETA": "La Creueta",
+        "UD.LOURDES B": "UD. Lourdes B",
+        "V.SINGUERLIN": "V. Singuerlín",
+        "SABADELL NORD": "Sabadell Nord",
+        "V.TURO DE LA PEIRA": "V. Turó - Peira",
+        "V.POLINYA B": "V. Polinyà B",
+        "UD.LOURDES A": "UD. Lourdes A",
+        "GORNAL-DERBI": "Gornal Derbi",
+        "V.MIRASOL": "V. Mirasol",
+        "SACACHISPAS": "Sacachispas",
+        "DESCANSA": "DESCANSA",
+      };
 
-      for(let i = 0; i< this.table1.length; i++){
-        this.table1[i]["Equipo 1"]=dict[this.table1[i]["Equipo 1"]];
-        this.table1[i]["Equipo 2"]=dict[this.table1[i]["Equipo 2"]];
-      }
-
-      for(let j = 0; j< this.table2.length; j++){
-        this.table2[j]["Equipos"]=dict[this.table2[j]["Equipos"]];
-      }
-
-    },
-    getTables: function () {
-      const request = require("request");
-      const cheerio = require("cheerio");
-      const HtmlTableToJson = require("html-table-to-json");
-
-      request.get(
-        "https://cors-anywhere.herokuapp.com/https://www.aec84.com/cdo.htm",
-        (err, res, body) => {
-          const $ = cheerio.load(body);
-
-          this.table1 = HtmlTableToJson.parse(
-            "<table>" + $("table").first().html() + "</table>"
-          ).results[0];
-
-          this.table2 = HtmlTableToJson.parse(
-            "<table>" + $("table").last().html() + "</table>"
-          ).results[0];
-
-          this.restyleNames();
+      if (id == 1 && !this.done1) {
+        this.done1=true;
+        for (let i = 0; i < this.table1.length; i++) {
+          this.table1[i]["EquipoLocal"] = dict[this.table1[i]["EquipoLocal"]];
+          this.table1[i]["EquipoVisitante"] =
+            dict[this.table1[i]["EquipoVisitante"]];
         }
-      );
-    },
-    getTextInformation: function () {
-      const cheerio = require("cheerio");
-      const request = require("request");
-
-      request(
-        "https://cors-anywhere.herokuapp.com/https://www.aec84.com/cdo.htm",
-        (error, response, body) => {
-          let span1 = (
-            cheerio("span", body)[2]["children"][0].data +
-            cheerio("span", body)[3]["children"][0].data
-          ).split(":");
-          let span2 = cheerio("span", body)[3]["children"][2].data.split(":");
-          let span3 = cheerio("span", body)[3]["children"][4].data.split(":");
-
-          this.text1 = span1[1];
-          this.text2 = span2[0] + "--> " + span2[1];
-          this.text3 = span3[0] + "--> " + span3[1];
+      } else if (id == 2 && !this.done2) {
+        this.done2=true;
+        for (let j = 0; j < this.table2.length; j++) {
+          this.table2[j]["Equipo"] = dict[this.table2[j]["Equipo"]];
         }
-      );
+      }
+    },
+    getTablesandInformation: function () {
+      fb.db.collection("Clasf").onSnapshot((res) => {
+        const changes = res.docChanges();
+
+        changes.forEach((change) => {
+          if (change.type === "added") {
+            let t = change.doc.data();
+            this.table2.push(t);
+          }
+        });
+
+        this.restyleNames(2);
+
+        this.table2.sort(function (a, b) {
+          return a.Pos - b.Pos;
+        });
+
+      });
+
+      fb.db.collection("LastWeek").onSnapshot((res) => {
+        const changes = res.docChanges();
+
+        changes.forEach((change) => {
+          if (change.type === "added") {
+            let t = change.doc.data();
+            this.table1.push(t);
+          }
+        });
+
+        this.restyleNames(1);
+      });
+
+      fb.db.collection("Jornada").onSnapshot((res) => {
+        const changes = res.docChanges();
+
+        changes.forEach((change) => {
+          if (change.type === "added") {
+            let t = change.doc.data();
+            this.text3 = t.j;
+          }
+        });
+      });
     },
   },
   created: function () {
-    this.getTextInformation();
-    this.getTables();
+    this.getTablesandInformation();
   },
 };
 </script>
