@@ -5,6 +5,11 @@ var playersList = [
         playerDescription: "",
     },
     {
+        playerNumber: 1,
+        playerName: "Manuel",
+        playerDescription: "",
+    },
+    {
         playerNumber: 2,
         playerName: "Manu",
         playerDescription: "",

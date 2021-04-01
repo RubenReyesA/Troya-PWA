@@ -55,9 +55,6 @@
                       required
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" :style="dialogInfo.showCheckBox">
-                    <v-checkbox v-model="checkbox" label="Resetear Convocatorias"></v-checkbox>
-                  </v-col>
                 </v-row>
               </v-container>
               <v-alert v-model="dialogInfo.showError" type="error">{{dialogInfo.errorText}}</v-alert>
@@ -93,14 +90,6 @@
         class="btnStyled light-green lighten-2 black--text"
         @click="changeComment"
       >Cambiar Comentario</v-btn>
-      <v-btn
-        class="btnStyled light-green lighten-2 black--text"
-        @click="resetConvocatoria"
-      >Resetear Convocatoria</v-btn>
-      <v-btn
-        class="btnStyled light-green lighten-2 black--text"
-        @click="resetEntrenamiento"
-      >Resetear Entrenamiento</v-btn>
     </div>
     <div class="try">
       <v-alert v-model="showError" type="error">Acceso no autorizado. Inicie sesión</v-alert>
@@ -122,7 +111,6 @@ export default {
       this.dialogInfo.input1disabled = true;
       this.dialogInfo.btnDisabled = true;
       this.dialogInfo.showSelector = true;
-      this.dialogInfo.showCheckBox = "display:block";
       this.checkbox = true;
       this.placeholderCB = "Opciones: (No Jugado) <--> (X-X)";
       this.dialogInfo.label1 = "Resultado";
@@ -152,11 +140,6 @@ export default {
             jNum: ar[1],
             Result: this.dialogInfo.input1,
           });
-
-          if (this.checkbox) {
-            this.resetConvocatoria();
-            this.resetEntrenamiento();
-          }
 
           this.dialogInfo.showSuccess = true;
 
@@ -240,27 +223,6 @@ export default {
         }
       };
     },
-    resetConvocatoria: function () {
-      fb.db.collection("Convocatoria").onSnapshot((res) => {
-        const changes = res.docChanges();
-
-        changes.forEach((change) => {
-          if (change.type === "added") {
-            let t = change.doc.data();
-
-            if (t.Type == "1") {
-              let p = {
-                PlayerNum: t.PlayerNum,
-                Status: 2,
-              };
-
-              fb.db.collection("Convocatoria").doc(change.doc.id).update(p);
-            }
-          }
-        });
-      });
-    },
-    resetEntrenamiento: function () {},
     close: function () {
       this.showDialog = false;
       this.dialogInfo.title = "";
@@ -270,7 +232,6 @@ export default {
       this.dialogInfo.input2 = "";
       this.dialogInfo.label1 = "";
       this.dialogInfo.label2 = "";
-      this.dialogInfo.showCheckBox = "display:none";
       this.checkbox = "";
       this.placeholderCB = "";
       this.dialogInfo.selectorTitle = "";
@@ -336,7 +297,6 @@ export default {
         showInput1: "display:none",
         showInput2: "display:none",
         btnText: "",
-        showCheckBox: "display:none",
         FBfunction: null,
       },
     };

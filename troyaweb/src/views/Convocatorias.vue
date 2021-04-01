@@ -40,6 +40,7 @@
             :title2="pTitle2"
             :subtitle2="pSubtitle2"
             :name="pName"
+            :jornada="pJornada"
           ></Meeting>
         </v-tab-item>
         <v-tab-item value="tab2">
@@ -51,6 +52,7 @@
             :title2="eTitle2"
             :subtitle2="eSubtitle2"
             :name="eName"
+            :jornada="pJornada"
           ></Meeting>
         </v-tab-item>
       </v-tabs-items>
@@ -73,6 +75,7 @@ export default {
       pMatch: null,
       pTitle2: null,
       pSubtitle2: null,
+      pJornada: null,
       pName: null,
       eTitle: null,
       eDay: null,
@@ -88,6 +91,7 @@ export default {
     this.pDay = this.$cookies.get("currentDay");
     this.pHour = this.$cookies.get("currentHour");
     this.pMatch = this.$cookies.get("currentMatch");
+    this.pJornada = this.$cookies.get("currentJ");
     this.pTitle2 = "Marca tu asistencia al partido";
     this.pSubtitle2 = "¿Vas a asistir al partido?";
     this.pName = "Convocatoria";

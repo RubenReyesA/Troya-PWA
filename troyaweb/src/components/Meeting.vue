@@ -75,11 +75,7 @@
       ></v-select>
 
       <v-row justify="center">
-        <v-dialog
-          v-model="dialog"
-          max-width="290"
-          :disabled="!isselected"
-        >
+        <v-dialog v-model="dialog" max-width="290" :disabled="!isselected">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               color="primary"
@@ -129,7 +125,16 @@ import info from "@/information";
 import fb from "@/fb";
 
 export default {
-  props: ["title", "day", "hour", "match", "title2", "subtitle2", "name"],
+  props: [
+    "title",
+    "day",
+    "hour",
+    "match",
+    "title2",
+    "subtitle2",
+    "name",
+    "jornada",
+  ],
   watch: {
     selectedPlayer: function () {
       if (this.selectedPlayer != "") {
@@ -146,6 +151,7 @@ export default {
       h: this.hour,
       m: this.match,
       t2: this.title2,
+      j: this.jornada,
       st2: this.subtitle2,
       pass: null,
       showError: false,
@@ -191,19 +197,15 @@ export default {
       if (checked) {
         this.dialog = false;
 
-        if (type == 0) {
-          let index = this.lookforPosition(this.selectedPlayer);
-          console.log(index);
-
-          fb.db.collection(this.name).doc(this.playersIDsFB[index]).update({
-            Status: 0,
-          });
-        } else if (type == 1) {
-          let index = this.lookforPosition(this.selectedPlayer);
-          fb.db.collection(this.name).doc(this.playersIDsFB[index]).update({
-            Status: 1,
-          });
-        }
+         let index = this.lookforPosition(this.selectedPlayer);
+          fb.db
+            .collection(this.name)
+            .doc("J" + this.j)
+            .collection("players")
+            .doc(this.playersIDsFB[index])
+            .update({
+              Status: type,
+            });
 
         this.update();
       } else {
@@ -218,31 +220,23 @@ export default {
       this.playersIDsFB = [];
       this.pass = "";
 
-      if (this.match == "No disponible") {
+      if (this.match == "No disponible" || this.match == "Sin partido") {
         this.noMatch = true;
       } else {
         this.noMatch = false;
       }
 
-      fb.db.collection(this.name).onSnapshot((res) => {
-        const changes = res.docChanges();
+      fb.db
+        .collection(this.name)
+        .doc("J" + this.j)
+        .collection("players")
+        .onSnapshot((res) => {
+          const changes = res.docChanges();
 
-        let r = false;
+          changes.forEach((change) => {
+            if (change.type === "added") {
+              let t = change.doc.data();
 
-        changes.forEach((change) => {
-          if (change.type === "added") {
-            let t = change.doc.data();
-
-            if (t.Type == "0") {
-              if (t.Jornada != this.$cookies.get("currentJ")) {
-                r = true;
-                let p = {
-                  Type: "0",
-                  Jornada: this.$cookies.get("currentJ"),
-                };
-                fb.db.collection(this.name).doc(change.doc.id).update(p);
-              }
-            } else if (t.Type == "1") {
               let name = this.lookforNamefromNum(t.PlayerNum);
               this.playersListNames.push(name);
               this.playersIDsFB.push(change.doc.id);
@@ -264,31 +258,8 @@ export default {
                   break;
               }
             }
-          }
-        });
-
-        if (r) {
-          fb.db.collection(this.name).onSnapshot((res) => {
-            const changes = res.docChanges();
-
-            changes.forEach((change) => {
-              if (change.type === "added") {
-                let t = change.doc.data();
-
-                if (t.Type == "1") {
-                  let p = {
-                    PlayerNum: t.PlayerNum,
-                    Status: 2,
-                  };
-
-                  fb.db.collection(this.name).doc(change.doc.id).update(p);
-                }
-              }
-            });
           });
-          this.update();
-        }
-      });
+        });
     },
     add: function () {
       for (let i = 0; i < info.playersList.length; i++) {
