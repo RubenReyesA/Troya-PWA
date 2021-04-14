@@ -121,7 +121,7 @@ var playersList = [
     },
     {
         playerNumber: 24,
-        playerName: "Vargas",
+        playerName: "Daniel Leal",
         playerDescription: "",
     },
     {
