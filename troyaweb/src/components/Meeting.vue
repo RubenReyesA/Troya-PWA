@@ -107,8 +107,8 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="green darken-1" text @click="assist(0)">Voy</v-btn>
-              <v-btn color="green darken-1" text @click="assist(1)"
-                >No Voy</v-btn
+              <v-btn color="green darken-1" text @click="assist(2)"
+                >Duda</v-btn
               >
             </v-card-actions>
           </v-card>
