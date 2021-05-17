@@ -102,6 +102,7 @@ export default {
         "gornal-derbi": "Gornal Derbi",
         "v.mirasol": "V. Mirasol",
         "sacachispas": "Sacachispas",
+        "a.v.palleja": "A.V. Pallejà",
         "V.GLADIADOR": "V. Gladiador",
         "CAN BUXERAS": "Can Buxeres",
         "UD.ANDALUCIA": "UD. Andalucía",
@@ -117,7 +118,7 @@ export default {
         "GORNAL-DERBI": "Gornal Derbi",
         "V.MIRASOL": "V. Mirasol",
         "SACACHISPAS": "Sacachispas",
-        "DESCANSA": "DESCANSA",
+        "A.V.PALLEJA": "A.V. Pallejà"
       };
 
       if (id == 1 && !this.done1) {
