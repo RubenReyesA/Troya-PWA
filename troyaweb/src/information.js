@@ -60,11 +60,6 @@ var playersList = [
         playerDescription: "",
     },
     {
-        playerNumber: 12,
-        playerName: "Utrilla",
-        playerDescription: "",
-    },
-    {
         playerNumber: 13,
         playerName: "Peque",
         playerDescription: "",
